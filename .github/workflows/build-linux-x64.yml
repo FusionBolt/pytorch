@@ -14,8 +14,9 @@ jobs:
         os: [ubuntu-18.04]
     
     steps:
+    - uses: seanmiddleditch/gha-setup-ninja@master
     - name: Clone pytorch/pytorch
-      uses: 
+      uses: actions/checkout@v1
       with:
         path: pytorch
         submodules: recursive

@@ -1,0 +1,35 @@
+name: build-linux-x64
+on: [push]
+
+env:
+  USE_CUDA: False
+  BUILD_TEST: False
+  DESIRED_PYTHON: '3.7'
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-18.04]
+    
+    steps:
+    - name: Clone pytorch/pytorch
+      uses: 
+      with:
+        path: pytorch
+        submodules: recursive
+      run: |
+        mkdir pytorch-build
+        ls /
+
+    - name: Configure CMake
+      working-directory: pytorch-build
+      run: |
+        ls
+        cmake -G Ninja -DBUILD_SHARED_LIBS:BOOL=OFF -DCMAKE_BUILD_TYPE:STRING=Release -DPYTHON_EXECUTABLE:PATH=`which python3` -DCMAKE_INSTALL_PREFIX:PATH=../pytorch-install ../pytorch
+        echo 'CMake Configure Ok'
+
+    - name: Build pytorch binary
+      working-directory: pytorch-builder
+      run: cmake --build . --target torch

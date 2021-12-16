@@ -38,7 +38,7 @@ jobs:
     - name: Configure CMake
       run: |
         mkdir build && cd build
-        cmake -G Ninja -DBUILD_SHARED_LIBS:BOOL=OFF -DCMAKE_BUILD_TYPE:STRING=Release -DPYTHON_EXECUTABLE:PATH=`which python3` ..
+        cmake -DBUILD_SHARED_LIBS:BOOL=OFF -DCMAKE_BUILD_TYPE:STRING=Release -DPYTHON_EXECUTABLE:PATH=`which python3` ..
         echo 'CMake Configure Ok'
 
     - name: Build pytorch binary

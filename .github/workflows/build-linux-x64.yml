@@ -18,7 +18,6 @@ jobs:
     - name: Clone pytorch/pytorch
       uses: actions/checkout@v1
       with:
-        path: pytorch
         submodules: recursive
 
     - name: Create Build Dir
@@ -29,7 +28,7 @@ jobs:
     - name: Configure CMake
       working-directory: pytorch-build
       run: |
-        ls
+        ls 
         cmake -G Ninja -DBUILD_SHARED_LIBS:BOOL=OFF -DCMAKE_BUILD_TYPE:STRING=Release -DPYTHON_EXECUTABLE:PATH=`which python3` -DCMAKE_INSTALL_PREFIX:PATH=../pytorch-install ../pytorch
         echo 'CMake Configure Ok'
 

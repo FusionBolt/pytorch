@@ -12,12 +12,10 @@ jobs:
       matrix:
         os: [ubuntu-18.04,windows-2019,macos-10.15]
     
-    steps:
-    - uses: seanmiddleditch/gha-setup-ninja@master
-    - name: Clone pytorch/pytorch
-      uses: actions/checkout@v1
+    - name: Setup Python
+      uses: actions/setup-python@v2.2.1
       with:
-        submodules: recursive
+        python-version: 3.7
 
     - name: Install Common Python Dependecies
       run: pip install astunparse numpy ninja pyyaml mkl mkl-include setuptools cmake cffi typing_extensions future six requests dataclasses
@@ -26,10 +24,12 @@ jobs:
       if: runner.os == 'Windows'
       uses: ilammy/msvc-dev-cmd@v1.9.0
 
-    - name: Setup Python
-      uses: actions/setup-python@v2.2.1
+    steps:
+    - uses: seanmiddleditch/gha-setup-ninja@master
+    - name: Clone pytorch/pytorch
+      uses: actions/checkout@v1
       with:
-        python-version: 3.7
+        submodules: recursive
 
     - name: Configure CMake
       run: |

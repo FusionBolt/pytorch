@@ -29,11 +29,8 @@ jobs:
       with:
         python-version: 3.7
   
-    - name: Debug1
-      run: ls
-
-    - name: Debug2
-      run: which python3
+    - name: Install Python Dependecies
+      run: pip install typing_extensions
 
     - name: Configure CMake
       run: |

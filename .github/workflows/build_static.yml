@@ -31,9 +31,12 @@ jobs:
       with:
         submodules: recursive
 
+    - name: Create Build Environment
+      run: cmake -E make_directory ${{github.workspace}}/build
+
     - name: Configure CMake
+      working-directory: ${{github.workspace}}/build
       run: |
-        mkdir build && cd build
         cmake -DBUILD_SHARED_LIBS:BOOL=OFF -DCMAKE_BUILD_TYPE:STRING=Release -DPYTHON_EXECUTABLE:PATH=`which python3` ..
         echo 'CMake Configure Ok'
 

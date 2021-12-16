@@ -22,7 +22,8 @@ else()
   set(CMAKE_CXX_STANDARD 14)
 endif()
 
-add_library(shm SHARED core.cpp)
+add_library(shm STATIC core.cpp)
+
 if(HAVE_SOVERSION)
   set_target_properties(shm PROPERTIES
       VERSION ${TORCH_VERSION} SOVERSION ${TORCH_SOVERSION})

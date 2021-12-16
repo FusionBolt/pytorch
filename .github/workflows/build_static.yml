@@ -33,13 +33,14 @@ jobs:
     - name: Create Build Environment
       with:
         path: pytorch
-      run: cmake -E make_directory build
   
     - name: Configure CMake
-      working-directory: pytorch/build
+      working-directory: pytorch
       run: |
+        echo ${{github.workspace}}
         pwd
         ls 
+        mkdir build && cd build
         cmake -G Ninja -DBUILD_SHARED_LIBS:BOOL=OFF -DCMAKE_BUILD_TYPE:STRING=Release -DPYTHON_EXECUTABLE:PATH=`which python3` ..
         echo 'CMake Configure Ok'
 

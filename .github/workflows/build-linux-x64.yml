@@ -18,6 +18,7 @@ jobs:
     - name: Clone pytorch/pytorch
       uses: actions/checkout@v1
       with:
+        path: pytorch
         submodules: recursive
 
     - name: Add msbuild to PATH
@@ -29,18 +30,19 @@ jobs:
       with:
         python-version: 3.7
 
-    - name: Create Build Dir
-      run: |
-        mkdir pytorch-build
-        ls /
-
+    - name: Create Build Environment
+      with:
+        path: pytorch
+      run: cmake -E make_directory build
+  
     - name: Configure CMake
-      working-directory: pytorch-build
+      working-directory: pytorch/build
       run: |
+        pwd
         ls 
-        cmake -G Ninja -DBUILD_SHARED_LIBS:BOOL=OFF -DCMAKE_BUILD_TYPE:STRING=Release -DPYTHON_EXECUTABLE:PATH=`which python3` -DCMAKE_INSTALL_PREFIX:PATH=../pytorch-install ../pytorch
+        cmake -G Ninja -DBUILD_SHARED_LIBS:BOOL=OFF -DCMAKE_BUILD_TYPE:STRING=Release -DPYTHON_EXECUTABLE:PATH=`which python3` ..
         echo 'CMake Configure Ok'
 
     - name: Build pytorch binary
-      working-directory: pytorch-builder
+      working-directory: pytorch/build
       run: cmake --build . --target torch

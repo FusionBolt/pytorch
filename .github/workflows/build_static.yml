@@ -29,8 +29,12 @@ jobs:
       with:
         python-version: 3.7
   
-    - name: Install Python Dependecies
-      run: pip install typing_extensions
+    - name: Install Common Python Dependecies
+      run: pip install astunparse numpy ninja pyyaml mkl mkl-include setuptools cmake cffi typing_extensions future six requests dataclasses
+
+    - name: Install Windows Dependecies
+      if: runner.os != 'Linux'
+      run: pip install pkg-config libuv
 
     - name: Configure CMake
       run: |

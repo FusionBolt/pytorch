@@ -10,8 +10,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        # os: [ubuntu-18.04,windows-2019,macos-10.15]
-        os: [macos-10.15]
+        os: [ubuntu-18.04,windows-2019,macos-10.15]
     
     steps:
     - name: Setup Python
@@ -33,13 +32,30 @@ jobs:
         submodules: recursive
 
     - name: Create Build Environment
-      run: cmake -E make_directory ${{github.workspace}}/build
+      run: 
+        cmake -E make_directory ${{github.workspace}}/build
 
     - name: Configure CMake
       working-directory: ${{github.workspace}}/build
       run: |
-        cmake -DBUILD_SHARED_LIBS:BOOL=OFF -DCMAKE_BUILD_TYPE:STRING=Release ..
+        cmake -DBUILD_SHARED_LIBS:BOOL=OFF -DCMAKE_BUILD_TYPE:STRING=Release .. -DCMAKE_INSTALL_PREFIX=${{github.workspace}}/libtorch_dir
 
     - name: Build pytorch binary
       working-directory: ${{github.workspace}}/build
-      run: cmake --build . --target torch
+      run: cmake --build . --target torch --config Release
+
+    - name: Install binary
+      working-directory: ${{github.workspace}}/build 
+      run: cmake --install . 
+
+    - name: Create Build Environment
+      working-directory: ${{github.workspace}}/libtorch_dir 
+      run: 
+        echo "test" > test.txt
+
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v2.2.2
+      with:
+        name: libtorch-${{matrix.os}}-x86_64
+        path: ${{github.workspace}}/libtorch_dir
+        if-no-files-found: error

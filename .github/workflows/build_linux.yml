@@ -1,4 +1,4 @@
-name: build-linux-x64
+name: ubuntu-18.04
 on: [push]
 
 env:
@@ -10,7 +10,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-18.04,windows-2019,macos-10.15]
+        os: [ubuntu-18.04]
     
     steps:
     - name: Setup Python
@@ -46,12 +46,7 @@ jobs:
 
     - name: Install binary
       working-directory: ${{github.workspace}}/build 
-      run: cmake --install . 
-
-    - name: Create Build Environment
-      working-directory: ${{github.workspace}}/libtorch_dir 
-      run: 
-        echo "test" > test.txt
+      run: cmake --install . --prefix ../libtorch_dir
 
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v2.2.2
